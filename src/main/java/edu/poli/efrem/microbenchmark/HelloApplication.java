@@ -11,9 +11,13 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("micro-welcome.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Efrem Micro-Benchmark");
+        Scene scene = new Scene(fxmlLoader.load(), 400, 400);
+        scene.getRoot().requestFocus();
+        stage.setTitle("Dragoș's Micro-Benchmark app");
         stage.setScene(scene);
+        stage.setMinHeight(400);
+        stage.setMinWidth(400);
+        stage.setResizable(false);
         stage.show();
     }
 
