@@ -2,9 +2,17 @@ package edu.poli.efrem.microbenchmark;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
@@ -18,6 +26,15 @@ public class HelloController {
     private ProgressBar benchmarkProgress;
     @FXML
     private Button startButton;
+    @FXML
+    private Button showResultsButton;
+
+    ArrayList<Result> results;
+
+    @FXML
+    public void initialize() {
+        showResultsButton.setVisible(false);
+    }
 
     @FXML
     protected void onHelloButtonClick() throws InterruptedException {
@@ -29,6 +46,8 @@ public class HelloController {
                             @Override
                             public void run() {
                                 statusText.setText("Status: Starting benchmark..");
+                                showResultsButton.setVisible(false);
+                                results = new ArrayList<>();
                             }
                         });
 
@@ -137,10 +156,19 @@ public class HelloController {
                         }
                         DoubleSummaryStatistics st1 = cpuTimeQueen.stream().mapToDouble(a -> a).summaryStatistics();
                         DoubleSummaryStatistics st2 = cpuTimeFFT.stream().mapToDouble(a -> a).summaryStatistics();
+                        Result newResult1 = new Result();
+                        newResult1.setResultName("9 Queens Problem (Backtracking)");
+                        newResult1.setCpuTimeMeasured(st1.getAverage());
+                        results.add(newResult1);
+                        Result newResult2 = new Result();
+                        newResult2.setResultName("Fast Fourier Transform");
+                        newResult2.setCpuTimeMeasured(st2.getAverage());
+                        results.add(newResult2);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 statusText.setText("Status: Process completed succesfully");
+                                showResultsButton.setVisible(true);
                             }
                         });
                         System.out.println(st2.getMin() + " " + st2.getMax());
@@ -150,7 +178,23 @@ public class HelloController {
             }
         };
         mainProgramThread.start();
+    }
 
-
+    @FXML
+    protected void onShowResultsButtonClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("micro-results.fxml"));
+        Parent resultsParent = loader.load();
+        ResultsController newController = loader.getController();
+        newController.setResults(results);
+        Scene scene = new Scene(resultsParent);
+        Stage newStage = new Stage();
+        newStage.setScene(scene);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.setTitle("Dragoș's Micro-Benchmark app - Performance Results");
+        newStage.getIcons().add(new Image("file:docs/Logo.png"));
+        newStage.show();
+        newStage.setResizable(false);
     }
 }
+
+

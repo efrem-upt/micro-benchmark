@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@edu/poli/efrem/microbenchmark/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.poli.efrem.microbenchmark.ResultsController">
+   <children>
+      <Text fx:id="welcomeMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Performance Results" textAlignment="CENTER" wrappingWidth="593.48046875" />
+      <TableView fx:id="resultsTable" prefHeight="358.0" prefWidth="600.0" />
+   </children>
+</VBox>

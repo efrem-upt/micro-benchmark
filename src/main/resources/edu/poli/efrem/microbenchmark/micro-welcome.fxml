@@ -15,4 +15,5 @@
    <JFXButton fx:id="startButton" onAction="#onHelloButtonClick" text="Start Benchmark" />
    <ProgressBar fx:id="benchmarkProgress" prefWidth="200.0" progress="0.0" />
    <Label fx:id="statusText" text="Status:" />
+   <JFXButton fx:id="showResultsButton" onAction="#onShowResultsButtonClick" text="Show Results" />
 </VBox>
