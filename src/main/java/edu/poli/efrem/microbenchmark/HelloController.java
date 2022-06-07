@@ -67,6 +67,7 @@ public class HelloController {
                 ThreadMXBean mx1 = ManagementFactory.getThreadMXBean();
                 ArrayList<Double> cpuTimeQueen = new ArrayList<Double>();
                 ArrayList<Double> cpuTimeFFT = new ArrayList<Double>();
+                ArrayList<Double> cpuTimePrime = new ArrayList<Double>();
                 benchmarkProgress.setProgress(0);
                 Thread operationsThread = new Thread() {
                     public void run() {
@@ -95,7 +96,7 @@ public class HelloController {
                                     Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.001);
+                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.002/3);
                                             statusText.setText("Status: Running 9 queens problem (backtracking) " + (finalI + 1) + " out of 500");
                                         }
                                     });
@@ -130,7 +131,7 @@ public class HelloController {
                                     Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.001);
+                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.002/3);
                                             statusText.setText("Status: Running Fast Fourier Transform " + (finalI + 1) + " out of 500");
                                         }
                                     });
@@ -141,6 +142,46 @@ public class HelloController {
                         fftThread.start();
                         try {
                             fftThread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        Thread primeThread =  new Thread() {
+                            public void run() {
+                                for (int i = 0; i < 500; i++) {
+                                    try {
+                                        Thread.sleep(15);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Thread primeOperation = new Thread() {
+                                        public void run() {
+                                            PrimeFactors factors = new PrimeFactors();
+                                            factors.execute();
+                                            cpuTimePrime.add((double) mx1.getThreadCpuTime(this.getId()));
+                                        }
+                                    };
+                                    primeOperation.start();
+                                    try {
+                                        primeOperation.join();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    int finalI = i;
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.002/3);
+                                            statusText.setText("Status: Running factorization algorithm " + (finalI + 1) + " out of 500");
+                                        }
+                                    });
+                                }
+                            }
+                        };
+
+                        primeThread.start();
+                        try {
+                            primeThread.join();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -156,6 +197,7 @@ public class HelloController {
                         }
                         DoubleSummaryStatistics st1 = cpuTimeQueen.stream().mapToDouble(a -> a).summaryStatistics();
                         DoubleSummaryStatistics st2 = cpuTimeFFT.stream().mapToDouble(a -> a).summaryStatistics();
+                        DoubleSummaryStatistics st3 = cpuTimePrime.stream().mapToDouble(a -> a).summaryStatistics();
                         Result newResult1 = new Result();
                         newResult1.setResultName("9 Queens Problem (Backtracking)");
                         newResult1.setCpuTimeMeasured(st1.getAverage());
@@ -164,6 +206,10 @@ public class HelloController {
                         newResult2.setResultName("Fast Fourier Transform");
                         newResult2.setCpuTimeMeasured(st2.getAverage());
                         results.add(newResult2);
+                        Result newResult3 = new Result();
+                        newResult3.setResultName("Factorization algorithm");
+                        newResult3.setCpuTimeMeasured(st3.getAverage());
+                        results.add(newResult3);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -171,7 +217,6 @@ public class HelloController {
                                 showResultsButton.setVisible(true);
                             }
                         });
-                        System.out.println(st2.getMin() + " " + st2.getMax());
                     }
                 };
                 afterOperationsThread.start();
