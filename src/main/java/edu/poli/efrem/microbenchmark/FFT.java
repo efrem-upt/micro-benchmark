@@ -212,8 +212,8 @@ public class FFT {
      *
      ***************************************************************************/
 
-    public void execute() {
-        int n = 64;
+    public void execute(int nn) {
+        int n = nn;
         Complex[] x = new Complex[n];
 
         // original data

@@ -26,13 +26,19 @@ public class ResultsController {
 
     @FXML
     public void initialize() {
-        TableColumn<Result, String> nameColumn = new TableColumn<>("Type of testing");
-        nameColumn.setMinWidth(300);
+        TableColumn<Result, String> nameColumn = new TableColumn<>("Type");
+        nameColumn.setMinWidth(200);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("resultName"));
-        TableColumn<Result, Double> timeColumn = new TableColumn<>("CPU Time (nanoseconds)");
-        timeColumn.setMinWidth(300);
+        TableColumn<Result, Double> timeColumn = new TableColumn<>("CPU Time Average (nanoseconds)");
+        timeColumn.setMinWidth(200);
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("cpuTimeMeasured"));
-        resultsTable.getColumns().addAll(nameColumn, timeColumn);
+        TableColumn<Result, Double> timeMaxColumn = new TableColumn<>("CPU Time Max (nanoseconds)");
+        timeMaxColumn.setMinWidth(200);
+        timeMaxColumn.setCellValueFactory(new PropertyValueFactory<>("cpuTimeMax"));
+        TableColumn<Result, Double> timeTotalColumn = new TableColumn<>("CPU Time Total (nanoseconds)");
+        timeTotalColumn.setMinWidth(200);
+        timeTotalColumn.setCellValueFactory(new PropertyValueFactory<>("cpuTimeTotal"));
+        resultsTable.getColumns().addAll(nameColumn, timeColumn, timeMaxColumn, timeTotalColumn);
     }
 
 

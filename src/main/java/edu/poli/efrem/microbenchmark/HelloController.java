@@ -28,12 +28,19 @@ public class HelloController {
     private Button startButton;
     @FXML
     private Button showResultsButton;
+    @FXML
+    private Label estimatedTimeRemaining;
 
     ArrayList<Result> results;
+
+    public Button getStartButton() {
+        return startButton;
+    }
 
     @FXML
     public void initialize() {
         showResultsButton.setVisible(false);
+        estimatedTimeRemaining.setVisible(false);
     }
 
     @FXML
@@ -48,6 +55,9 @@ public class HelloController {
                                 statusText.setText("Status: Starting benchmark..");
                                 showResultsButton.setVisible(false);
                                 results = new ArrayList<>();
+                                startButton.setVisible(false);
+                                estimatedTimeRemaining.setVisible(true);
+                                estimatedTimeRemaining.setText("Estimated time remaining: ");
                             }
                         });
 
@@ -68,6 +78,7 @@ public class HelloController {
                 ArrayList<Double> cpuTimeQueen = new ArrayList<Double>();
                 ArrayList<Double> cpuTimeFFT = new ArrayList<Double>();
                 ArrayList<Double> cpuTimePrime = new ArrayList<Double>();
+                long startTime = System.nanoTime();
                 benchmarkProgress.setProgress(0);
                 Thread operationsThread = new Thread() {
                     public void run() {
@@ -98,6 +109,24 @@ public class HelloController {
                                         public void run() {
                                             benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.002/3);
                                             statusText.setText("Status: Running 9 queens problem (backtracking) " + (finalI + 1) + " out of 500");
+                                            long elapsedTime = System.nanoTime() - startTime;
+                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
+                                            long remainingTime;
+                                            String unit;
+                                            if (calc >= 1) {
+                                                remainingTime = Math.round(calc);
+                                                if (remainingTime != 1)
+                                                    unit = "minutes";
+                                                else
+                                                    unit = "minute";
+                                            } else {
+                                                remainingTime = Math.round(calc / 0.0166666667);
+                                                if (remainingTime != 1)
+                                                    unit = "seconds";
+                                                else
+                                                    unit = "second";
+                                            }
+                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
                                         }
                                     });
                                 }
@@ -122,17 +151,43 @@ public class HelloController {
                                     Thread fftOperation = new Thread() {
                                         public void run() {
                                             FFT newFFT = new FFT();
-                                            newFFT.execute();
+                                            newFFT.execute(32);
+                                            newFFT.execute(64);
+                                            newFFT.execute(512);
+                                            newFFT.execute(1024);
                                             cpuTimeFFT.add((double) mx1.getThreadCpuTime(this.getId()));
                                         }
                                     };
                                     fftOperation.start();
+                                    try {
+                                        fftOperation.join();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     int finalI = i;
                                     Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
                                             benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.002/3);
                                             statusText.setText("Status: Running Fast Fourier Transform " + (finalI + 1) + " out of 500");
+                                            long elapsedTime = System.nanoTime() - startTime;
+                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
+                                            long remainingTime;
+                                            String unit;
+                                            if (calc >= 1) {
+                                                remainingTime = Math.round(calc);
+                                                if (remainingTime != 1)
+                                                    unit = "minutes";
+                                                else
+                                                    unit = "minute";
+                                            } else {
+                                                remainingTime = Math.round(calc / 0.0166666667);
+                                                if (remainingTime != 1)
+                                                    unit = "seconds";
+                                                else
+                                                    unit = "second";
+                                            }
+                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
                                         }
                                     });
                                 }
@@ -173,6 +228,24 @@ public class HelloController {
                                         public void run() {
                                             benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.002/3);
                                             statusText.setText("Status: Running factorization algorithm " + (finalI + 1) + " out of 500");
+                                            long elapsedTime = System.nanoTime() - startTime;
+                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
+                                            long remainingTime;
+                                            String unit;
+                                            if (calc >= 1) {
+                                                remainingTime = Math.round(calc);
+                                                if (remainingTime != 1)
+                                                    unit = "minutes";
+                                                else
+                                                    unit = "minute";
+                                            } else {
+                                                remainingTime = Math.round(calc / 0.0166666667);
+                                                if (remainingTime != 1)
+                                                    unit = "seconds";
+                                                else
+                                                    unit = "second";
+                                            }
+                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
                                         }
                                     });
                                 }
@@ -201,20 +274,28 @@ public class HelloController {
                         Result newResult1 = new Result();
                         newResult1.setResultName("9 Queens Problem (Backtracking)");
                         newResult1.setCpuTimeMeasured(st1.getAverage());
+                        newResult1.setCpuTimeMax(st1.getMax());
+                        newResult1.setCpuTimeTotal(st1.getSum());
                         results.add(newResult1);
                         Result newResult2 = new Result();
                         newResult2.setResultName("Fast Fourier Transform");
                         newResult2.setCpuTimeMeasured(st2.getAverage());
+                        newResult2.setCpuTimeMax(st2.getMax());
+                        newResult2.setCpuTimeTotal(st2.getSum());
                         results.add(newResult2);
                         Result newResult3 = new Result();
                         newResult3.setResultName("Factorization algorithm");
                         newResult3.setCpuTimeMeasured(st3.getAverage());
+                        newResult3.setCpuTimeMax(st3.getMax());
+                        newResult3.setCpuTimeTotal(st3.getSum());
                         results.add(newResult3);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                statusText.setText("Status: Process completed succesfully");
+                                statusText.setText("Status: Process completed successfully");
                                 showResultsButton.setVisible(true);
+                                startButton.setVisible(true);
+                                estimatedTimeRemaining.setVisible(false);
                             }
                         });
                     }
@@ -235,7 +316,7 @@ public class HelloController {
         Stage newStage = new Stage();
         newStage.setScene(scene);
         newStage.initModality(Modality.WINDOW_MODAL);
-        newStage.setTitle("Dragoș's Micro-Benchmark app - Performance Results");
+        newStage.setTitle("Dragos's Micro-Benchmark app - Performance Results");
         newStage.getIcons().add(new Image("file:docs/Logo.png"));
         newStage.show();
         newStage.setResizable(false);

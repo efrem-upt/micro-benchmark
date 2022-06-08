@@ -17,17 +17,10 @@ public class PrimeFactors {
     }
 
     public void execute() {
-        System.out.println("Primefactors of 44");
-        for (Integer integer : primeFactors(44)) {
-            System.out.println(integer);
-        }
-        System.out.println("Primefactors of 3");
-        for (Integer integer : primeFactors(3)) {
-            System.out.println(integer);
-        }
-        System.out.println("Primefactors of 32");
-        for (Integer integer : primeFactors(32)) {
-            System.out.println(integer);
+        for (int i = 0; i < 1000; i++) {
+            for (Integer integer : primeFactors(i)) {
+                System.out.println(integer);
+            }
         }
     }
 }
