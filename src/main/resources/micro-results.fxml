@@ -4,10 +4,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@edu/poli/efrem/microbenchmark/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.poli.efrem.microbenchmark.ResultsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@edu/poli/efrem/microbenchmark/style.css" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.poli.efrem.microbenchmark.controllers.ResultsController">
    <children>
       <Text fx:id="welcomeMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Performance Results" textAlignment="CENTER" wrappingWidth="593.48046875" />
-      <TableView fx:id="resultsTable" prefHeight="358.0" prefWidth="600.0" />
+      <TableView fx:id="resultsTable" prefHeight="278.0" prefWidth="600.0" />
+      <Text fx:id="cpuTimeMeasuredTotal" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="CPU Time measured for all tasks: " translateX="5.0" wrappingWidth="575.0804443359375" />
+      <Text fx:id="totalBenchmarkTime" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="Total benchmark time:" translateX="5.0" wrappingWidth="575.0804443359375" />
    </children>
 </VBox>

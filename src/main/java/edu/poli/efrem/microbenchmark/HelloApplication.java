@@ -1,11 +1,12 @@
 package edu.poli.efrem.microbenchmark;
 
+import edu.poli.efrem.microbenchmark.controllers.HelloController;
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -27,6 +28,7 @@ public class HelloApplication extends Application {
         stage.setMinHeight(400);
         stage.setMinWidth(400);
         stage.setResizable(false);
+        stage.getIcons().add(new Image("logo.png"));
         stage.show();
         stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
     }
