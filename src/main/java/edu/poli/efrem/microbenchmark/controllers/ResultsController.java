@@ -9,6 +9,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class ResultsController {
@@ -34,7 +36,7 @@ public class ResultsController {
 
     public void setTotalCPUTime(double totalCPUTime) {
         this.totalCPUTime = totalCPUTime;
-        cpuTimeMeasuredTotal.setText("CPU Time measured for all tasks: " + totalCPUTime + " ns");
+        cpuTimeMeasuredTotal.setText("CPU Time Average measured for all tasks: " + BigDecimal.valueOf(totalCPUTime).setScale(6, RoundingMode.HALF_EVEN).doubleValue() + " ns");
     }
 
     public void setTotalBenchmark(double totalBenchmark) {

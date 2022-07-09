@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 
@@ -403,38 +405,38 @@ public class HelloController {
                         DoubleSummaryStatistics st3 = cpuTimePrime.stream().mapToDouble(a -> a).summaryStatistics();
                         DoubleSummaryStatistics st4 = cpuTimeDot.stream().mapToDouble(a -> a).summaryStatistics();
                         DoubleSummaryStatistics st5 = cpuTimeThread.stream().mapToDouble(a -> a).summaryStatistics();
-                        totalCPUTime = st1.getAverage() + st2.getAverage() + st3.getAverage() + st4.getAverage() + st5.getAverage();
                         totalBenchmark = System.nanoTime() - startTime;
                         Result newResult1 = new Result();
                         newResult1.setResultName("9 Queens Problem (Backtracking)");
-                        newResult1.setCpuTimeMeasured(st1.getAverage());
+                        newResult1.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeQueen)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
                         newResult1.setCpuTimeMax(st1.getMax());
                         newResult1.setCpuTimeTotal(st1.getSum());
                         results.add(newResult1);
                         Result newResult2 = new Result();
                         newResult2.setResultName("Fast Fourier Transform");
-                        newResult2.setCpuTimeMeasured(st2.getAverage());
+                        newResult2.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeFFT)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
                         newResult2.setCpuTimeMax(st2.getMax());
                         newResult2.setCpuTimeTotal(st2.getSum());
                         results.add(newResult2);
                         Result newResult3 = new Result();
                         newResult3.setResultName("Factorization Algorithm");
-                        newResult3.setCpuTimeMeasured(st3.getAverage());
+                        newResult3.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimePrime)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
                         newResult3.setCpuTimeMax(st3.getMax());
                         newResult3.setCpuTimeTotal(st3.getSum());
                         results.add(newResult3);
                         Result newResult4 = new Result();
                         newResult4.setResultName("Large Matrix Dot Product");
-                        newResult4.setCpuTimeMeasured(st4.getAverage());
+                        newResult4.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeDot)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
                         newResult4.setCpuTimeMax(st4.getMax());
                         newResult4.setCpuTimeTotal(st4.getSum());
                         results.add(newResult4);
                         Result newResult5 = new Result();
                         newResult5.setResultName("Large Matrix Tensor Product");
-                        newResult5.setCpuTimeMeasured(st5.getAverage());
+                        newResult5.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeThread)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
                         newResult5.setCpuTimeMax(st5.getMax());
                         newResult5.setCpuTimeTotal(st5.getSum());
                         results.add(newResult5);
+                        totalCPUTime = geometricAverageAll(cpuTimeQueen, cpuTimeFFT, cpuTimePrime, cpuTimeDot, cpuTimeThread);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -450,6 +452,52 @@ public class HelloController {
             }
         };
         mainProgramThread.start();
+    }
+
+    private double geometricAverage(ArrayList<Double> cpuTime) {
+        int n = cpuTime.size();
+        double GM_log = 0.0d;
+        for (int i = 0; i < n; i++) {
+            if (cpuTime.get(i) == 0L) {
+                cpuTime.remove(i);
+                n--;
+                i--;
+            }
+        }
+        for (int i = 0; i < n; ++i) {
+            GM_log += Math.log(cpuTime.get(i));
+        }
+        return (n > 0) ? Math.exp(GM_log / n) : n;
+    }
+
+    private double geometricAverageAll(ArrayList<Double> cpuTime1, ArrayList<Double> cpuTime2, ArrayList<Double> cpuTime3, ArrayList<Double> cpuTime4, ArrayList<Double> cpuTime5) {
+        int n = cpuTime1.size();
+        double GM_log = 0.0d;
+        double w_i = 0.1 / n;
+        for (int i = 0; i < n; ++i) {
+            GM_log += w_i * Math.log(cpuTime1.get(i));
+        }
+        n = cpuTime2.size();
+        w_i = 0.3 / n;
+        for (int i = 0; i < n; ++i) {
+            GM_log += w_i * Math.log(cpuTime2.get(i));
+        }
+        n = cpuTime3.size();
+        w_i = 0.1 / n;
+        for (int i = 0; i < n; ++i) {
+            GM_log += w_i * Math.log(cpuTime3.get(i));
+        }
+        n = cpuTime4.size();
+        w_i = 0.3 / n;
+        for (int i = 0; i < n; ++i) {
+            GM_log += w_i * Math.log(cpuTime4.get(i));
+        }
+        n = cpuTime5.size();
+        w_i = 0.2 / n;
+        for (int i = 0; i < n; ++i) {
+            GM_log += w_i * Math.log(cpuTime5.get(i));
+        }
+        return (GM_log > 0) ? Math.exp(GM_log) : GM_log;
     }
 
     @FXML
