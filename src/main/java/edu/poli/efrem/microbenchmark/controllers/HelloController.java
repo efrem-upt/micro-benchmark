@@ -459,7 +459,8 @@ public class HelloController {
                         cpuTimeTotal.addAll(cpuTimeDot);
                         cpuTimeTotal.addAll(cpuTimeThread);
                         totalCPUTime = geometricAverageAll(cpuTimeTotal);
-                        FirebaseService.updateResults(totalCPUTime);
+                        if (FirebaseService.isInternetReachable() == true)
+                            FirebaseService.updateResults(totalCPUTime);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -512,7 +513,12 @@ public class HelloController {
         ResultsController newController = loader.getController();
         newController.setResults(results);
         newController.setTotalCPUTime(totalCPUTime);
-        newController.setCpuTimeAverages(FirebaseService.returnResults());
+        if (FirebaseService.isInternetReachable() == true) {
+            newController.setCpuTimeAverages(FirebaseService.returnResults());
+            newController.setInternet(true);
+        } else {
+            newController.setInternet(false);
+        }
         newController.setTotalBenchmark(totalBenchmark);
         Scene scene = new Scene(resultsParent);
         Stage newStage = new Stage();

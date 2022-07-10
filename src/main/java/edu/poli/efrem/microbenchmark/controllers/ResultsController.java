@@ -1,12 +1,15 @@
 package edu.poli.efrem.microbenchmark.controllers;
 
 import edu.poli.efrem.microbenchmark.models.Result;
+import edu.poli.efrem.microbenchmark.services.FirebaseService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.math.BigDecimal;
@@ -20,7 +23,8 @@ public class ResultsController {
     private double totalCPUTime;
     private double totalBenchmark;
     private double score;
-
+    private boolean internet;
+    private boolean wasPreviouslyFalseInternet;
     @FXML
     private TableView resultsTable;
     @FXML
@@ -29,6 +33,10 @@ public class ResultsController {
     private Text totalBenchmarkTime;
     @FXML
     private Text finalScoreText;
+    @FXML
+    private VBox mainBox;
+    @FXML
+    private BorderPane borderP;
 
     public ArrayList<Result> getResults() {
         return results;
@@ -37,6 +45,20 @@ public class ResultsController {
     public void setResults(ArrayList<Result> results) {
         this.results = results;
         resultsTable.setItems(FXCollections.observableList(results));
+    }
+
+    public void setInternet(boolean internet) {
+        this.internet = internet;
+        if (internet == false) {
+            finalScoreText.setVisible(false);
+            borderP.setVisible(false);
+            wasPreviouslyFalseInternet = true;
+        } else {
+            finalScoreText.setVisible(true);
+            borderP.setVisible(true);
+            FirebaseService.updateResults(totalCPUTime);
+            wasPreviouslyFalseInternet = false;
+        }
     }
 
     public void setCpuTimeAverages(ArrayList<Double> cpuTimeAverages) {
