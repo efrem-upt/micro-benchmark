@@ -3,7 +3,7 @@ package edu.poli.efrem.microbenchmark.types;
 /* Java program to solve N Queen Problem using
 backtracking */
 public class NQueenProblem {
-    final int N = 9;
+    private int N = 9;
 
     /* A utility function to print solution */
     void printSolution(int board[][])
@@ -85,17 +85,10 @@ public class NQueenProblem {
     Please note that there may be more than one
     solutions, this function prints one of the
     feasible solutions.*/
-    public boolean solveNQ()
+    public boolean solveNQ(int n)
     {
-        int board[][] = { { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 }};
+        N = n;
+        int board[][] = new int[n][n];
 
         if (solveNQUtil(board, 0) == false) {
             System.out.print("Solution does not exist");

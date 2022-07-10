@@ -105,7 +105,22 @@ public class HelloController {
                                     Thread queenOperation = new Thread() {
                                         public void run() {
                                             NQueenProblem queenProblem = new NQueenProblem();
-                                            queenProblem.solveNQ();
+                                            queenProblem.solveNQ(1);
+                                            queenProblem.solveNQ(2);
+                                            queenProblem.solveNQ(3);
+                                            queenProblem.solveNQ(4);
+                                            queenProblem.solveNQ(5);
+                                            queenProblem.solveNQ(6);
+                                            queenProblem.solveNQ(7);
+                                            queenProblem.solveNQ(8);
+                                            queenProblem.solveNQ(9);
+                                            queenProblem.solveNQ(10);
+                                            queenProblem.solveNQ(11);
+                                            queenProblem.solveNQ(12);
+                                            queenProblem.solveNQ(13);
+                                            queenProblem.solveNQ(14);
+                                            queenProblem.solveNQ(15);
+                                            queenProblem.solveNQ(16);
                                             cpuTimeQueen.add((double) mx1.getThreadCpuTime(this.getId()));
                                         }
                                     };
@@ -121,7 +136,7 @@ public class HelloController {
                                         public void run() {
                                             benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
                                             progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
-                                            statusText.setText("Status: Running 9 queens problem (backtracking)");
+                                            statusText.setText("Status: Running N queens problem (backtracking)");
                                             long elapsedTime = System.nanoTime() - startTime;
                                             double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
                                             long remainingTime;
@@ -407,7 +422,7 @@ public class HelloController {
                         DoubleSummaryStatistics st5 = cpuTimeThread.stream().mapToDouble(a -> a).summaryStatistics();
                         totalBenchmark = System.nanoTime() - startTime;
                         Result newResult1 = new Result();
-                        newResult1.setResultName("9 Queens Problem (Backtracking)");
+                        newResult1.setResultName("N Queens Problem (Backtracking)");
                         newResult1.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeQueen)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
                         newResult1.setCpuTimeMax(st1.getMax());
                         newResult1.setCpuTimeTotal(st1.getSum());
@@ -436,7 +451,13 @@ public class HelloController {
                         newResult5.setCpuTimeMax(st5.getMax());
                         newResult5.setCpuTimeTotal(st5.getSum());
                         results.add(newResult5);
-                        totalCPUTime = geometricAverageAll(cpuTimeQueen, cpuTimeFFT, cpuTimePrime, cpuTimeDot, cpuTimeThread);
+                        ArrayList<Double> cpuTimeTotal = new ArrayList<>();
+                        cpuTimeTotal.addAll(cpuTimeQueen);
+                        cpuTimeTotal.addAll(cpuTimeFFT);
+                        cpuTimeTotal.addAll(cpuTimePrime);
+                        cpuTimeTotal.addAll(cpuTimeDot);
+                        cpuTimeTotal.addAll(cpuTimeThread);
+                        totalCPUTime = geometricAverageAll(cpuTimeTotal);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -457,45 +478,27 @@ public class HelloController {
     private double geometricAverage(ArrayList<Double> cpuTime) {
         int n = cpuTime.size();
         double GM_log = 0.0d;
-        for (int i = 0; i < n; i++) {
-            if (cpuTime.get(i) == 0L) {
-                cpuTime.remove(i);
-                n--;
-                i--;
-            }
-        }
         for (int i = 0; i < n; ++i) {
+            if (cpuTime.get(i) == 0)
+                continue;
             GM_log += Math.log(cpuTime.get(i));
         }
         return (n > 0) ? Math.exp(GM_log / n) : n;
     }
 
-    private double geometricAverageAll(ArrayList<Double> cpuTime1, ArrayList<Double> cpuTime2, ArrayList<Double> cpuTime3, ArrayList<Double> cpuTime4, ArrayList<Double> cpuTime5) {
-        int n = cpuTime1.size();
+    private double geometricAverageAll(ArrayList<Double> cpuTime) {
+        int n = cpuTime.size();
         double GM_log = 0.0d;
-        double w_i = 0.1 / n;
+        double w_i;
         for (int i = 0; i < n; ++i) {
-            GM_log += w_i * Math.log(cpuTime1.get(i));
-        }
-        n = cpuTime2.size();
-        w_i = 0.3 / n;
-        for (int i = 0; i < n; ++i) {
-            GM_log += w_i * Math.log(cpuTime2.get(i));
-        }
-        n = cpuTime3.size();
-        w_i = 0.1 / n;
-        for (int i = 0; i < n; ++i) {
-            GM_log += w_i * Math.log(cpuTime3.get(i));
-        }
-        n = cpuTime4.size();
-        w_i = 0.3 / n;
-        for (int i = 0; i < n; ++i) {
-            GM_log += w_i * Math.log(cpuTime4.get(i));
-        }
-        n = cpuTime5.size();
-        w_i = 0.2 / n;
-        for (int i = 0; i < n; ++i) {
-            GM_log += w_i * Math.log(cpuTime5.get(i));
+            if (cpuTime.get(i) == 0)
+                continue;
+            if (i < 100) w_i = 0.05 / 100;
+            else if (i < 200) w_i = 0.3 / 100;
+            else if (i < 300) w_i = 0.1 / 100;
+            else if (i < 350) w_i = 0.3 / 50;
+            else w_i = 0.25 / 50;
+            GM_log += w_i * Math.log(cpuTime.get(i));
         }
         return (GM_log > 0) ? Math.exp(GM_log) : GM_log;
     }
