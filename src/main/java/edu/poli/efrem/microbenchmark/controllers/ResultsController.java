@@ -12,11 +12,14 @@ import javafx.scene.text.Text;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ResultsController {
     private ArrayList<Result> results;
+    private ArrayList<Double> cpuTimeAverages;
     private double totalCPUTime;
     private double totalBenchmark;
+    private double score;
 
     @FXML
     private TableView resultsTable;
@@ -24,6 +27,8 @@ public class ResultsController {
     private Text cpuTimeMeasuredTotal;
     @FXML
     private Text totalBenchmarkTime;
+    @FXML
+    private Text finalScoreText;
 
     public ArrayList<Result> getResults() {
         return results;
@@ -32,6 +37,19 @@ public class ResultsController {
     public void setResults(ArrayList<Result> results) {
         this.results = results;
         resultsTable.setItems(FXCollections.observableList(results));
+    }
+
+    public void setCpuTimeAverages(ArrayList<Double> cpuTimeAverages) {
+        this.cpuTimeAverages = cpuTimeAverages;
+        score = calculateScore();
+        if (score == 100)
+            finalScoreText.setText("Your score is: " + score + " / 100.0. You're the best -- good job!");
+        else if (score < 100 && score >= 75)
+            finalScoreText.setText("Your score is: " + score + " / 100.0. That's pretty good!");
+        else if (score < 75 && score >= 50)
+            finalScoreText.setText("Your score is: " + score + " / 100.0. So close!");
+        else if (score < 50)
+            finalScoreText.setText("Your score is: " + score + " / 100.0. It will get better!");
     }
 
     public void setTotalCPUTime(double totalCPUTime) {
@@ -62,5 +80,28 @@ public class ResultsController {
     }
 
 
+    public double calculateScore() {
+        Collections.sort(cpuTimeAverages);
+        double poz = 0;
+        int ok = 0;
+        int found = 0;
+        for (int i = 0; i < cpuTimeAverages.size(); i++)
+            if (totalCPUTime < cpuTimeAverages.get(i)) {
+                poz = i;
+                ok = 1;
+                break;
+            } else if (totalCPUTime == cpuTimeAverages.get(i)) {
+                poz = i;
+                ok = 1;
+                found = 1;
+                break;
+            }
+        if (ok == 0 && cpuTimeAverages.size() > 0)
+            poz = cpuTimeAverages.size() - 1;
+
+        int newSize = (found == 0) ? (cpuTimeAverages.size() + 1) : (cpuTimeAverages.size());
+        double returnedScore = (1 - (poz / newSize)) * 100;
+        return BigDecimal.valueOf(returnedScore).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+    }
 
 }

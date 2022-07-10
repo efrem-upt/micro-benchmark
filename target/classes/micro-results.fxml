@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@edu/poli/efrem/microbenchmark/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.poli.efrem.microbenchmark.controllers.ResultsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" stylesheets="@edu/poli/efrem/microbenchmark/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.poli.efrem.microbenchmark.controllers.ResultsController">
    <children>
       <Text fx:id="welcomeMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Performance Results" textAlignment="CENTER" wrappingWidth="593.48046875" />
       <TableView fx:id="resultsTable" prefHeight="278.0" prefWidth="600.0" />
       <Text fx:id="cpuTimeMeasuredTotal" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="CPU Time Average measured for all tasks: " translateX="5.0" wrappingWidth="575.0804443359375" />
       <Text fx:id="totalBenchmarkTime" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="Total benchmark time:" translateX="5.0" wrappingWidth="575.0804443359375" />
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <Text fx:id="finalScoreText" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="Your score is:" textAlignment="CENTER" wrappingWidth="575.0804443359375" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
    </children>
 </VBox>

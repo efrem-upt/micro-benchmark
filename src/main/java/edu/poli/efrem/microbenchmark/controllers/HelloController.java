@@ -1,6 +1,7 @@
 package edu.poli.efrem.microbenchmark.controllers;
 
 import edu.poli.efrem.microbenchmark.models.Result;
+import edu.poli.efrem.microbenchmark.services.FirebaseService;
 import edu.poli.efrem.microbenchmark.types.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -458,6 +459,7 @@ public class HelloController {
                         cpuTimeTotal.addAll(cpuTimeDot);
                         cpuTimeTotal.addAll(cpuTimeThread);
                         totalCPUTime = geometricAverageAll(cpuTimeTotal);
+                        FirebaseService.updateResults(totalCPUTime);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -510,6 +512,7 @@ public class HelloController {
         ResultsController newController = loader.getController();
         newController.setResults(results);
         newController.setTotalCPUTime(totalCPUTime);
+        newController.setCpuTimeAverages(FirebaseService.returnResults());
         newController.setTotalBenchmark(totalBenchmark);
         Scene scene = new Scene(resultsParent);
         Stage newStage = new Stage();

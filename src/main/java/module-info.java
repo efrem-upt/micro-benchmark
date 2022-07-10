@@ -10,6 +10,12 @@ module edu.poli.efrem.microbenchmark {
     requires java.management;
     requires ejml.core;
     requires ejml.simple;
+    requires google.cloud.firestore;
+    requires firebase.admin;
+    requires com.google.auth.oauth2;
+    requires com.google.auth;
+    requires com.google.api.apicommon;
+    requires google.cloud.core;
 
     opens edu.poli.efrem.microbenchmark to javafx.fxml;
     exports edu.poli.efrem.microbenchmark;
