@@ -7,17 +7,13 @@ import com.google.firebase.FirebaseOptions;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class FirebaseInitialize {
 
         public void initialize()  {
-            FileInputStream serviceAccount =
-                    null;
-            try {
-                serviceAccount = new FileInputStream("src/main/java/edu/poli/efrem/microbenchmark/services/serviceAccountKey.json");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            InputStream serviceAccount = null;
+            serviceAccount = ClassLoader.getSystemResourceAsStream("serviceAccountKey.json");
 
             FirebaseOptions options = null;
             try {

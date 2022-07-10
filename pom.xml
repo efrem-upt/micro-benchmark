@@ -94,7 +94,18 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud</artifactId>
-            <version>0.47.0-alpha</version>
+            <version>0.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-core</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-firestore</artifactId>
+            <version>3.2.0</version>
         </dependency>
     </dependencies>
     <build>
