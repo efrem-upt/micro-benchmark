@@ -15,7 +15,7 @@ Run the program by double-clicking the jar file or executing the following Termi
 The user shall be presented with the following screen: 
 
 <p align="center">
-  <img src="docs/micro-welcome.png">
+  <img src="docs/micro-welcome.png" width = "400" height = "400">
 </p>
 
 Pressing on the `Start Benchmark` button will start the benchmark and do five tests: `N Queens Problem (Backtracking)`, `Fast Fourier Transform`, `Factorization Algorithm`, `Large Matrix Dot Product`, `Large Matrix Tensor Product`. More tests can be added by following the same procedures as the first five.
@@ -42,15 +42,16 @@ When the tests are completed, the user's general peformance (`CPU Time Average m
 ## Demo
 
 <p align="center">
-  <img src="Demo.gif">
+  <img src="https://raw.githubusercontent.com/dragosefrem/micro-benchmark/master/docs/Demo.gif" width = "600" height = "500">
 </p>
+
 ## Screenshots
 
 <p align="center">
-  <img src="docs/micro-results-1.png">
+  <img src="docs/micro-results-1.png" width = "600" height = "500">
 </p>
 <p align="center">
-  <img src="docs/micro-results-2.png">
+  <img src="docs/micro-results-2.png" width = "600" height = "500">
 </p>
 
 
