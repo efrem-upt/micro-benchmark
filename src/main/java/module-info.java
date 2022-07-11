@@ -17,6 +17,7 @@ module edu.poli.efrem.microbenchmark {
     requires com.google.api.apicommon;
     requires google.cloud.core;
 
+
     opens edu.poli.efrem.microbenchmark to javafx.fxml;
     exports edu.poli.efrem.microbenchmark;
     exports edu.poli.efrem.microbenchmark.types;

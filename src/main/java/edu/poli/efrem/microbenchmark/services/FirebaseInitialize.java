@@ -11,20 +11,20 @@ import java.io.InputStream;
 
 public class FirebaseInitialize {
 
-        public void initialize()  {
-            InputStream serviceAccount = null;
-            serviceAccount = ClassLoader.getSystemResourceAsStream("serviceAccountKey.json");
+    public void initialize()  {
+        InputStream serviceAccount = null;
+        serviceAccount = ClassLoader.getSystemResourceAsStream("serviceAccountKey.json");
 
-            FirebaseOptions options = null;
-            try {
-                options = new FirebaseOptions.Builder()
-                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                        .build();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            FirebaseApp.initializeApp(options);
-
+        FirebaseOptions options = null;
+        try {
+            options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        FirebaseApp.initializeApp(options);
+
+    }
 }

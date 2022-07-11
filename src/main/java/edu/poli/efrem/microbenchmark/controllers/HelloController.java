@@ -53,32 +53,27 @@ public class HelloController {
     }
 
     @FXML
-    protected void onHelloButtonClick() throws InterruptedException {
+    protected void onHelloButtonClick() {
         Thread mainProgramThread = new Thread() {
             public void run() {
-                Thread welcomeThread = new Thread() {
-                    public void run() {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                statusText.setText("Status: Starting benchmark..");
-                                showResultsButton.setVisible(false);
-                                results = new ArrayList<>();
-                                startButton.setVisible(false);
-                                estimatedTimeRemaining.setVisible(true);
-                                estimatedTimeRemaining.setText("Estimated time remaining: ");
-                                progress.setVisible(true);
-                                progress.setText("0%");
-                            }
-                        });
+                Thread welcomeThread = new Thread(() -> {
+                    Platform.runLater(() -> {
+                        statusText.setText("Status: Starting benchmark..");
+                        showResultsButton.setVisible(false);
+                        results = new ArrayList<>();
+                        startButton.setVisible(false);
+                        estimatedTimeRemaining.setVisible(true);
+                        estimatedTimeRemaining.setText("Estimated time remaining: ");
+                        progress.setVisible(true);
+                        progress.setText("0%");
+                    });
 
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                };
+                });
                 welcomeThread.start();
                 try {
                     welcomeThread.join();
@@ -86,11 +81,11 @@ public class HelloController {
                     e.printStackTrace();
                 }
                 ThreadMXBean mx1 = ManagementFactory.getThreadMXBean();
-                ArrayList<Double> cpuTimeQueen = new ArrayList<Double>();
-                ArrayList<Double> cpuTimeFFT = new ArrayList<Double>();
-                ArrayList<Double> cpuTimePrime = new ArrayList<Double>();
-                ArrayList<Double> cpuTimeDot = new ArrayList<Double>();
-                ArrayList<Double> cpuTimeThread = new ArrayList<Double>();
+                ArrayList<Double> cpuTimeQueen = new ArrayList<>();
+                ArrayList<Double> cpuTimeFFT = new ArrayList<>();
+                ArrayList<Double> cpuTimePrime = new ArrayList<>();
+                ArrayList<Double> cpuTimeDot = new ArrayList<>();
+                ArrayList<Double> cpuTimeThread = new ArrayList<>();
                 long startTime = System.nanoTime();
                 benchmarkProgress.setProgress(0);
                 Thread operationsThread = new Thread() {
@@ -131,32 +126,11 @@ public class HelloController {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    int finalI = i;
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
-                                            progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
-                                            statusText.setText("Status: Running N queens problem (backtracking)");
-                                            long elapsedTime = System.nanoTime() - startTime;
-                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
-                                            long remainingTime;
-                                            String unit;
-                                            if (calc >= 1) {
-                                                remainingTime = Math.round(calc);
-                                                if (remainingTime != 1)
-                                                    unit = "minutes";
-                                                else
-                                                    unit = "minute";
-                                            } else {
-                                                remainingTime = Math.round(calc / 0.0166666667);
-                                                if (remainingTime != 1)
-                                                    unit = "seconds";
-                                                else
-                                                    unit = "second";
-                                            }
-                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
-                                        }
+                                    Platform.runLater(() -> {
+                                        benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
+                                        progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
+                                        statusText.setText("Status: Running N queens problem (backtracking)");
+                                        elapsedTime(startTime);
                                     });
                                 }
                             }
@@ -193,32 +167,11 @@ public class HelloController {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    int finalI = i;
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
-                                            progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
-                                            statusText.setText("Status: Running Fast Fourier Transform");
-                                            long elapsedTime = System.nanoTime() - startTime;
-                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
-                                            long remainingTime;
-                                            String unit;
-                                            if (calc >= 1) {
-                                                remainingTime = Math.round(calc);
-                                                if (remainingTime != 1)
-                                                    unit = "minutes";
-                                                else
-                                                    unit = "minute";
-                                            } else {
-                                                remainingTime = Math.round(calc / 0.0166666667);
-                                                if (remainingTime != 1)
-                                                    unit = "seconds";
-                                                else
-                                                    unit = "second";
-                                            }
-                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
-                                        }
+                                    Platform.runLater(() -> {
+                                        benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
+                                        progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
+                                        statusText.setText("Status: Running Fast Fourier Transform");
+                                        elapsedTime(startTime);
                                     });
                                 }
                             }
@@ -252,32 +205,11 @@ public class HelloController {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    int finalI = i;
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
-                                            progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
-                                            statusText.setText("Status: Running factorization algorithm");
-                                            long elapsedTime = System.nanoTime() - startTime;
-                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
-                                            long remainingTime;
-                                            String unit;
-                                            if (calc >= 1) {
-                                                remainingTime = Math.round(calc);
-                                                if (remainingTime != 1)
-                                                    unit = "minutes";
-                                                else
-                                                    unit = "minute";
-                                            } else {
-                                                remainingTime = Math.round(calc / 0.0166666667);
-                                                if (remainingTime != 1)
-                                                    unit = "seconds";
-                                                else
-                                                    unit = "second";
-                                            }
-                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
-                                        }
+                                    Platform.runLater(() -> {
+                                        benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 0.01/5);
+                                        progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
+                                        statusText.setText("Status: Running factorization algorithm");
+                                        elapsedTime(startTime);
                                     });
                                 }
                             }
@@ -310,32 +242,11 @@ public class HelloController {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    int finalI = i;
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 2 * 0.01/5);
-                                            progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
-                                            statusText.setText("Status: Running large matrix dot product");
-                                            long elapsedTime = System.nanoTime() - startTime;
-                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
-                                            long remainingTime;
-                                            String unit;
-                                            if (calc >= 1) {
-                                                remainingTime = Math.round(calc);
-                                                if (remainingTime != 1)
-                                                    unit = "minutes";
-                                                else
-                                                    unit = "minute";
-                                            } else {
-                                                remainingTime = Math.round(calc / 0.0166666667);
-                                                if (remainingTime != 1)
-                                                    unit = "seconds";
-                                                else
-                                                    unit = "second";
-                                            }
-                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
-                                        }
+                                    Platform.runLater(() -> {
+                                        benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 2 * 0.01/5);
+                                        progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
+                                        statusText.setText("Status: Running large matrix dot product");
+                                        elapsedTime(startTime);
                                     });
 
                                 }
@@ -369,32 +280,11 @@ public class HelloController {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    int finalI = i;
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 2 * 0.01/5);
-                                            progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
-                                            statusText.setText("Status: Running large matrix tensor product");
-                                            long elapsedTime = System.nanoTime() - startTime;
-                                            double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
-                                            long remainingTime;
-                                            String unit;
-                                            if (calc >= 1) {
-                                                remainingTime = Math.round(calc);
-                                                if (remainingTime != 1)
-                                                    unit = "minutes";
-                                                else
-                                                    unit = "minute";
-                                            } else {
-                                                remainingTime = Math.round(calc / 0.0166666667);
-                                                if (remainingTime != 1)
-                                                    unit = "seconds";
-                                                else
-                                                    unit = "second";
-                                            }
-                                            estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
-                                        }
+                                    Platform.runLater(() -> {
+                                        benchmarkProgress.setProgress(benchmarkProgress.getProgress() + 2 * 0.01/5);
+                                        progress.setText((int)(benchmarkProgress.getProgress() * 100) + "%");
+                                        statusText.setText("Status: Running large matrix tensor product");
+                                        elapsedTime(startTime);
                                     });
                                 }
                             }
@@ -409,82 +299,98 @@ public class HelloController {
                     }
                 };
                 operationsThread.start();
-                Thread afterOperationsThread = new Thread() {
-                    public void run() {
-                        try {
-                            operationsThread.join();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        DoubleSummaryStatistics st1 = cpuTimeQueen.stream().mapToDouble(a -> a).summaryStatistics();
-                        DoubleSummaryStatistics st2 = cpuTimeFFT.stream().mapToDouble(a -> a).summaryStatistics();
-                        DoubleSummaryStatistics st3 = cpuTimePrime.stream().mapToDouble(a -> a).summaryStatistics();
-                        DoubleSummaryStatistics st4 = cpuTimeDot.stream().mapToDouble(a -> a).summaryStatistics();
-                        DoubleSummaryStatistics st5 = cpuTimeThread.stream().mapToDouble(a -> a).summaryStatistics();
-                        totalBenchmark = System.nanoTime() - startTime;
-                        Result newResult1 = new Result();
-                        newResult1.setResultName("N Queens Problem (Backtracking)");
-                        newResult1.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeQueen)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
-                        newResult1.setCpuTimeMax(st1.getMax());
-                        newResult1.setCpuTimeTotal(st1.getSum());
-                        results.add(newResult1);
-                        Result newResult2 = new Result();
-                        newResult2.setResultName("Fast Fourier Transform");
-                        newResult2.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeFFT)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
-                        newResult2.setCpuTimeMax(st2.getMax());
-                        newResult2.setCpuTimeTotal(st2.getSum());
-                        results.add(newResult2);
-                        Result newResult3 = new Result();
-                        newResult3.setResultName("Factorization Algorithm");
-                        newResult3.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimePrime)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
-                        newResult3.setCpuTimeMax(st3.getMax());
-                        newResult3.setCpuTimeTotal(st3.getSum());
-                        results.add(newResult3);
-                        Result newResult4 = new Result();
-                        newResult4.setResultName("Large Matrix Dot Product");
-                        newResult4.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeDot)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
-                        newResult4.setCpuTimeMax(st4.getMax());
-                        newResult4.setCpuTimeTotal(st4.getSum());
-                        results.add(newResult4);
-                        Result newResult5 = new Result();
-                        newResult5.setResultName("Large Matrix Tensor Product");
-                        newResult5.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeThread)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
-                        newResult5.setCpuTimeMax(st5.getMax());
-                        newResult5.setCpuTimeTotal(st5.getSum());
-                        results.add(newResult5);
-                        ArrayList<Double> cpuTimeTotal = new ArrayList<>();
-                        cpuTimeTotal.addAll(cpuTimeQueen);
-                        cpuTimeTotal.addAll(cpuTimeFFT);
-                        cpuTimeTotal.addAll(cpuTimePrime);
-                        cpuTimeTotal.addAll(cpuTimeDot);
-                        cpuTimeTotal.addAll(cpuTimeThread);
-                        totalCPUTime = geometricAverageAll(cpuTimeTotal);
-                        if (FirebaseService.isInternetReachable() == true)
-                            FirebaseService.updateResults(totalCPUTime);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                statusText.setText("Status: Process completed successfully");
-                                showResultsButton.setVisible(true);
-                                startButton.setVisible(true);
-                                estimatedTimeRemaining.setVisible(false);
-                            }
-                        });
+                Thread afterOperationsThread = new Thread(() -> {
+                    try {
+                        operationsThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                };
+                    DoubleSummaryStatistics st1 = cpuTimeQueen.stream().mapToDouble(a -> a).summaryStatistics();
+                    DoubleSummaryStatistics st2 = cpuTimeFFT.stream().mapToDouble(a -> a).summaryStatistics();
+                    DoubleSummaryStatistics st3 = cpuTimePrime.stream().mapToDouble(a -> a).summaryStatistics();
+                    DoubleSummaryStatistics st4 = cpuTimeDot.stream().mapToDouble(a -> a).summaryStatistics();
+                    DoubleSummaryStatistics st5 = cpuTimeThread.stream().mapToDouble(a -> a).summaryStatistics();
+                    totalBenchmark = System.nanoTime() - startTime;
+                    Result newResult1 = new Result();
+                    newResult1.setResultName("N Queens Problem (Backtracking)");
+                    newResult1.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeQueen)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
+                    newResult1.setCpuTimeMax(st1.getMax());
+                    newResult1.setCpuTimeTotal(st1.getSum());
+                    results.add(newResult1);
+                    Result newResult2 = new Result();
+                    newResult2.setResultName("Fast Fourier Transform");
+                    newResult2.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeFFT)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
+                    newResult2.setCpuTimeMax(st2.getMax());
+                    newResult2.setCpuTimeTotal(st2.getSum());
+                    results.add(newResult2);
+                    Result newResult3 = new Result();
+                    newResult3.setResultName("Factorization Algorithm");
+                    newResult3.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimePrime)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
+                    newResult3.setCpuTimeMax(st3.getMax());
+                    newResult3.setCpuTimeTotal(st3.getSum());
+                    results.add(newResult3);
+                    Result newResult4 = new Result();
+                    newResult4.setResultName("Large Matrix Dot Product");
+                    newResult4.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeDot)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
+                    newResult4.setCpuTimeMax(st4.getMax());
+                    newResult4.setCpuTimeTotal(st4.getSum());
+                    results.add(newResult4);
+                    Result newResult5 = new Result();
+                    newResult5.setResultName("Large Matrix Tensor Product");
+                    newResult5.setCpuTimeMeasured(BigDecimal.valueOf(geometricAverage(cpuTimeThread)).setScale(6, RoundingMode.HALF_EVEN).doubleValue());
+                    newResult5.setCpuTimeMax(st5.getMax());
+                    newResult5.setCpuTimeTotal(st5.getSum());
+                    results.add(newResult5);
+                    ArrayList<Double> cpuTimeTotal = new ArrayList<>();
+                    cpuTimeTotal.addAll(cpuTimeQueen);
+                    cpuTimeTotal.addAll(cpuTimeFFT);
+                    cpuTimeTotal.addAll(cpuTimePrime);
+                    cpuTimeTotal.addAll(cpuTimeDot);
+                    cpuTimeTotal.addAll(cpuTimeThread);
+                    totalCPUTime = geometricAverageAll(cpuTimeTotal);
+                    if (FirebaseService.isInternetReachable())
+                        FirebaseService.updateResults(totalCPUTime);
+                    Platform.runLater(() -> {
+                        statusText.setText("Status: Process completed successfully");
+                        showResultsButton.setVisible(true);
+                        startButton.setVisible(true);
+                        estimatedTimeRemaining.setVisible(false);
+                    });
+                });
                 afterOperationsThread.start();
             }
         };
         mainProgramThread.start();
     }
 
+    private void elapsedTime(long startTime) {
+        long elapsedTime = System.nanoTime() - startTime;
+        double calc = ((elapsedTime / benchmarkProgress.getProgress()) - elapsedTime) * 0.000000001 * 0.0166666667;
+        long remainingTime;
+        String unit;
+        if (calc >= 1) {
+            remainingTime = Math.round(calc);
+            if (remainingTime != 1)
+                unit = "minutes";
+            else
+                unit = "minute";
+        } else {
+            remainingTime = Math.round(calc / 0.0166666667);
+            if (remainingTime != 1)
+                unit = "seconds";
+            else
+                unit = "second";
+        }
+        estimatedTimeRemaining.setText("Estimated time remaining: " + remainingTime + " " + unit);
+    }
+
     private double geometricAverage(ArrayList<Double> cpuTime) {
         int n = cpuTime.size();
         double GM_log = 0.0d;
-        for (int i = 0; i < n; ++i) {
-            if (cpuTime.get(i) == 0)
+        for (Double aDouble : cpuTime) {
+            if (aDouble == 0)
                 continue;
-            GM_log += Math.log(cpuTime.get(i));
+            GM_log += Math.log(aDouble);
         }
         return (n > 0) ? Math.exp(GM_log / n) : n;
     }
@@ -513,7 +419,7 @@ public class HelloController {
         ResultsController newController = loader.getController();
         newController.setResults(results);
         newController.setTotalCPUTime(totalCPUTime);
-        if (FirebaseService.isInternetReachable() == true) {
+        if (FirebaseService.isInternetReachable()) {
             newController.setCpuTimeAverages(FirebaseService.returnResults());
             newController.setInternet(true);
         } else {
@@ -530,5 +436,4 @@ public class HelloController {
         newStage.setResizable(false);
     }
 }
-
 

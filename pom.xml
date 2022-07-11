@@ -107,6 +107,13 @@
             <artifactId>google-cloud-firestore</artifactId>
             <version>3.2.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.grpc/grpc-all -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-all</artifactId>
+            <version>1.47.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
