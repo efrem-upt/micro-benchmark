@@ -403,10 +403,10 @@ public class HelloController {
             if (cpuTime.get(i) == 0)
                 continue;
             if (i < 100) w_i = 0.05 / 100;
-            else if (i < 200) w_i = 0.3 / 100;
-            else if (i < 300) w_i = 0.1 / 100;
-            else if (i < 350) w_i = 0.3 / 50;
-            else w_i = 0.25 / 50;
+            else if (i < 200) w_i = 0.25 / 100;
+            else if (i < 300) w_i = 0.3 / 100;
+            else if (i < 350) w_i = 0.25 / 50;
+            else w_i = 0.15 / 50;
             GM_log += w_i * Math.log(cpuTime.get(i));
         }
         return (GM_log > 0) ? Math.exp(GM_log) : GM_log;
