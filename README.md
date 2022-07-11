@@ -14,7 +14,9 @@ Run the program by double-clicking the jar file or executing the following Termi
 ```
 The user shall be presented with the following screen: 
 
-![Welcome Screen](https://lh6.googleusercontent.com/Asti9OPZNnhLzxXAMnhYajbtDoC8Yw4-jv8GSQThh59y-ERGFnx9UIGcEz59eCOf8bxUZ_KxfdIncA=w1920-h932)
+<p align="center">
+  <img src="docs/micro-welcome.png">
+</p>
 
 Pressing on the `Start Benchmark` button will start the benchmark and do five tests: `N Queens Problem (Backtracking)`, `Fast Fourier Transform`, `Factorization Algorithm`, `Large Matrix Dot Product`, `Large Matrix Tensor Product`. More tests can be added by following the same procedures as the first five.
 
@@ -39,11 +41,17 @@ When the tests are completed, the user's general peformance (`CPU Time Average m
 
 ## Demo
 
-![hippo](https://lh5.googleusercontent.com/pl3ta4wo3onqBXS5D2P9UMVrzGnIpE8A7Z_uH_ZAZNb6yRORlF-Sda4622WIYpNnk8l2nAqVvUwpMg=w1920-h932-rw)
+<p align="center">
+  <img src="Demo.gif">
+</p>
 ## Screenshots
 
-![Result Screen 1](https://lh5.googleusercontent.com/wUsXjko7vWB3FDuBFzgumhQrlUG5gWIwRsFZuIipZaa789FgE_PwH1qbVzveGuXPLBvkvVzeh9Ppqw=w1920-h230)
-![Result Screen 2](https://lh4.googleusercontent.com/AH3sKdhp2kP9NHDogyWGwkRRgU0BJhdXqOaAiVpF9tmzPwTk5fVdiMIeIYXyOLrQ7Zj5LwylskC6LQ=w1920-h230)
+<p align="center">
+  <img src="docs/micro-results-1.png">
+</p>
+<p align="center">
+  <img src="docs/micro-results-2.png">
+</p>
 
 
 ## License
