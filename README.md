@@ -1,4 +1,9 @@
 # micro-benchmark
+
+<p align="center">
+  <img src="docs/rounded_logo.png" width = "200" height = "200">
+</p>
+
 Java program that measures the CPU Time of a computer by performing several tests and calculating a score. Small project made during my second year of Computer Engineering studies at Polytechnic University of Timișoara. Technologies used:
 * [Java 17](https://www.oracle.com/java/technologies/javase-downloads.html)
 * [JavaFX 18](https://openjfx.io/openjfx-docs/) (as GUI)
