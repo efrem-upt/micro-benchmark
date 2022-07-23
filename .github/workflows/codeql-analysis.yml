@@ -70,3 +70,8 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+      
+    - name: Setup Java JDK
+      uses: actions/setup-java@v3.4.1
+      with:
+        java-version: 17
