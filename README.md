@@ -10,13 +10,66 @@ Java program that measures the CPU Time of a computer by performing several test
 * [Maven](https://maven.apache.org/) (build tool)
 * [Google Firebase](https://firebase.google.com/) (as Database, for calculation of user score)
 
-## Running the program
+## Prerequisites
+To be able to install and run this project, please make sure you have installed Java 17 or higher. Otherwise, the setup will not work!
+To check your Java version, please run `java -version` in the command line.
 
-Run the program by double-clicking the jar file or executing the following Terminal command: 
+To install a newer version of Java, you can go to [Oracle](https://www.oracle.com/java/technologies/javase-downloads.html) or [OpenJDK](https://jdk.java.net/).
 
-```bash
-  java -jar "Dragos's Micro-Benchmark App.jar"
+It would be good if you also installed Maven to your system. To check if you have Maven installed run `mvn -version`.
+
+If you need to install any of them, please refer to this [Maven tutorial](https://www.baeldung.com/install-maven-on-windows-linux-mac).
+
+Make sure you install JavaFX SDK on your machine, using the instructions provided in the [Official Documentation](https://openjfx.io/openjfx-docs/#install-javafx). Make sure to export the `PATH_TO_FX` environment variable, or to replace it in every command you will find in this documentation from now on, with the `path/to/javafx-sdk-18/lib`.
+
+## How to build
+To set up and run the project locally on your machine, please follow the next steps.
+
+### Clone the repository
+Clone the repository using:
+```git
+git clone https://github.com/efrem-upt/micro-benchmark
 ```
+
+### Verify that the project Builds locally
+Open a command line session and `cd micro-benchmark`.
+If you have installed all the prerequisites, you should be able to run any of the following commands:
+```
+mvn clean install
+```
+If you prefer to run using the wrappers, you could also build the project using 
+```
+./mvnw clean install (for Linux or MacOS)
+or 
+mvnw.cmd clean install (for Windows)
+```
+
+### Create the database format
+
+1. Visit `https://console.firebase.google.com/` and create a new Firebase project
+2. Head over to the `Firestore Database` section of your project
+3. Press the `Start Collection` button and name the collection `results`
+4. For `Document ID`, type `results-document`
+5. Create the field `cpuTimeAverage` and set the type equal to `array`
+6. Press the `Save` button
+
+### Generate the serviceAccountKey.json file
+
+This file is required for the implementation of user scores via Google Firebase.
+
+1. Head over to `Project Settings` and then to `Service accounts`
+2. Press the 'Generate new private key` button and then `Generate key`
+3. Rename the file to `serviceAccountKey.json` and place it in the Resources folder
+
+### Run the app
+
+To start and run the project use one of the following commands:
+* `mvn javafx:run` or `./mvnw javafx:run` (run the `run` goal of the `javafx` maven plugin)
+
+To understand better how to set up a project using JavaFX and [Maven](https://openjfx.io/openjfx-docs/#maven), please check the [official OpenJFX documentation](https://openjfx.io/).
+
+## How it works
+
 The user shall be presented with the following screen: 
 
 <p align="center">
@@ -62,5 +115,5 @@ When the tests are completed, the user's general peformance (`CPU Time Average m
 
 ## License
 
-[GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
+[MIT](https://choosealicense.com/licenses/mit/)
 
