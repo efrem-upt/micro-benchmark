@@ -14,13 +14,13 @@ import java.util.concurrent.ExecutionException;
 public class FirebaseService {
     public static void updateResults(double cpuTime) {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        DocumentReference results = dbFirestore.collection("results").document("egC99Gc0L7QgWWpGwvW2");
+        DocumentReference results = dbFirestore.collection("results").document("results-document");
         results.update("cpuTimeAverage", FieldValue.arrayUnion(cpuTime));
     }
 
     public static ArrayList<Double> returnResults() {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        DocumentReference results = dbFirestore.collection("results").document("egC99Gc0L7QgWWpGwvW2");
+        DocumentReference results = dbFirestore.collection("results").document("results-document");
         DocumentSnapshot doc = null;
         try {
             doc = results.get().get();
