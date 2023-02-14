@@ -58,7 +58,7 @@ mvnw.cmd clean install (for Windows)
 This file is required for the implementation of user scores via Google Firebase.
 
 1. Head over to `Project Settings` and then to `Service accounts`
-2. Press the 'Generate new private key` button and then `Generate key`
+2. Press the `Generate new private key` button and then `Generate key`
 3. Rename the file to `serviceAccountKey.json` and place it in the Resources folder
 
 ### Run the app
